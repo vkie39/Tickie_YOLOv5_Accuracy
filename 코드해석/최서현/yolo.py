@@ -1,3 +1,4 @@
+"""
 import argparse 
 import contextlib
 import math
@@ -109,7 +110,7 @@ class Detect(nn.Module):
 
     #Detect 클래스의 생성자를 정의하는 함수
     def __init__(self, nc=80, anchors=(), ch=(), inplace=True):
-        """Initializes YOLOv5 detection layer with specified classes, anchors, channels, and inplace operations."""
+        #Initializes YOLOv5 detection layer with specified classes, anchors, channels, and inplace operations.
         super().__init__() #부모 클래스의 생성자를 호출하는 방법. 
         #즉, nn.Module이 여기서는 부모 클래스 인 것이고, 이 부모 클래스의 모든 초기 설정이 수행됨. 이후 사용자가 정의한 네트워크 레이어나 모듈에 파이토치기능을 제공.
         
@@ -130,7 +131,7 @@ class Detect(nn.Module):
 
     #모델의 입력 데이터 x를 처리하기 위한 forward 메소드를 정의
     def forward(self, x):
-        """Processes input through YOLOv5 layers, altering shape for detection: `x(bs, 3, ny, nx, 85)`."""
+        #Processes input through YOLOv5 layers, altering shape for detection: `x(bs, 3, ny, nx, 85)`.
         z = []  # 추론 결과를 저장할 빈 리스트 z 초기화
         for i in range(self.nl): #모델 레이어 수(nl)만큼 반복한다. 
             x[i] = self.m[i](x[i])  # i번쨰 레이어의 컨볼루션 연산을 적용한다. 
@@ -168,7 +169,7 @@ class Detect(nn.Module):
         #(torch.cat(z, 1), x): self.trainng과 self.export 모두 false일 경우(즉 모델이 ㅍㅛ준 추론 모드에 있을 때) z의 모든 텐서를 연결한 결과와 원본 입력 x를 함께 반환. 이 경우, 연결된 결과는 모델이 만든 모든 예측을 포함하고, x는 원본 데이터를 참조하기 위해 반환된다. (입력데이터를 분석하거나 후처리할 때 필요하다고 함)
 
     def _make_grid(self, nx=20, ny=20, i=0, torch_1_10=check_version(torch.__version__, "1.10.0")):
-        """Generates a mesh grid for anchor boxes with optional compatibility for torch versions < 1.10."""
+        #Generates a mesh grid for anchor boxes with optional compatibility for torch versions < 1.10.
         d = self.anchors[i].device
         t = self.anchors[i].dtype
         shape = 1, self.na, ny, nx, 2  # grid shape
@@ -180,3 +181,4 @@ class Detect(nn.Module):
 
 
 #위 함수부터 하면 됨
+"""
