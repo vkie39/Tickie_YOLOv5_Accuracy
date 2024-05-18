@@ -1,4 +1,3 @@
-"""
 import argparse 
 import contextlib
 import math
@@ -181,4 +180,3 @@ class Detect(nn.Module):
 
 
 #위 함수부터 하면 됨
-"""
