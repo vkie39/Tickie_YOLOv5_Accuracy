@@ -256,6 +256,8 @@ class ComputeLoss:
 
 """
 FocalLoss는 모델을 훈련시킬 때 클래스불균형을 해소하는데 도움을 준다. 출처 : https://learnopencv.com/yolo-loss-function-siou-focal-loss/
+
+소스코드 url :https://github.com/spmallick/learnopencv.git
 """
 class FocalLoss(nn.Module):
     def __init__(self, alpha=None, gamma=2):
