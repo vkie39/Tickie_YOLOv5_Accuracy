@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['layPeople', 'not_lay']
+
+roboflow:
+  workspace: vkie39
+  project: lay_not_lay
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/vkie39/lay_not_lay/dataset/1
