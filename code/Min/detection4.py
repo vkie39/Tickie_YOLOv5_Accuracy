@@ -100,12 +100,12 @@ while cap.isOpened():
         for class_name, count in current_count.items():
             if class_name == "layPeople":  # 클래스 이름이 "사람이 탄 킥보드"일 경우
                 kickboard_count += count
-                if kickboard_count >= 4:
+                if kickboard_count >= 10: #현재 한번 객체가 감지될때 굉장히 많이 감지되므로 카운트 수를 늘렸음
                     print("사람이 누웠어요!")
                     kickboard_count = 0  # 카운트 리셋
             elif class_name == "not_lay":  # 클래스 이름이 "누워있는 사람"일 경우
                 lying_person_count += count
-                if lying_person_count >= 3:
+                if lying_person_count >= 10: #카운트 수 늘림.
                     print("일어났네요")
                     lying_person_count = 0  # 카운트 리셋
 
