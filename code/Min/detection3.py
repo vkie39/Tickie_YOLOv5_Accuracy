@@ -6,8 +6,9 @@ from pathlib import Path
 import argparse
 import sys
 import pathlib
+# 코랩에서 학습시킨 파일을 윈도우 환경에서 실행시키기 위해 필요
 pathlib.PosixPath = pathlib.WindowsPath
-# Yolov5 디렉토리를 시스템 경로에 추가
+# Yolov5 디렉토리를 시스템 경로에 추가 - yolov5의 함수를 이 파일에서 사용하기 위함임
 yolov5_path = "G:/내 드라이브/yolov5"
 sys.path.append(yolov5_path)
 from models.experimental import attempt_load

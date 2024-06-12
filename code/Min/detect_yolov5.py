@@ -1,5 +1,7 @@
 import sys
+#yolov5의 사용을 위해서 내 컴퓨터 안에 있ㄴ
 yolov5_path = "G:/내 드라이브/yolov5"
+#model = torch.hub.load('ulralytics/yolov5','custom',path='모델')
 sys.path.append(yolov5_path)
 import cv2
 import argparse
@@ -43,6 +45,7 @@ def main(opt):
     
     while cap.isOpened():
         ret, frame = cap.read()
+        #print(ret)
         if not ret:
             break
         img = cv2.resize(frame, (opt.imgsz[1], opt.imgsz[0]))
@@ -51,8 +54,18 @@ def main(opt):
         frame_resized = cv2.resize(frame, (img_size, img_size))
     
         img = torch.from_numpy(img.transpose(2, 0, 1)).float().div(255.0).unsqueeze(0).to(device)
-        results = model(img)
-        if opt.view_img:
+        pred = model(img)
+
+        # 결과 처리
+        pred = pred[pred[:, :, 4] > 0.25]  # confidence threshold
+        current_count = defaultdict(int)
+
+        for *xyxy, conf, cls in pred:
+            class_id = int(cls)
+            class_name = class_names[class_id]
+            current_count[class_name] += 1
+            
+        if True: # opt.view_img:
             for result in results:
                 for *xyxy, conf, cls in result:
                     cv2.rectangle(frame, (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3])), (255, 0, 0), 2)

@@ -1,3 +1,6 @@
+#실행했을 때 바운딩 박스가 이상하게 쳐져
+#프레임 수를 정해서 -> 1초에 1개가 적당함.
+#실제로 감지하지 않더라도 바운딩 박스를 유지하면 좋다.
 import cv2
 import torch
 import time
@@ -17,7 +20,7 @@ from utils.torch_utils import select_device
 
 # YOLOv5의 detect.py와 유사한 인자 파서 설정
 parser = argparse.ArgumentParser()
-parser.add_argument('--source', type=str, default=0, help='file/dir/URL/glob, 0 for webcam')
+parser.add_argument('--source', type=str, default="C:/Users/Min/Desktop/KakaoTalk_20240606_170455402.mp4", help='file/dir/URL/glob, 0 for webcam')
 parser.add_argument('--weights', type=str, default="C:/Users/Min/Desktop/best.pt", help='weights path')
 parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
 opt = parser.parse_args()
@@ -57,11 +60,12 @@ while cap.isOpened():
     # 프레임 간격 조절
     if no_detection:
         if current_time - last_detection_time > max_no_detection_time:
-            frame_interval = 1.0  # 객체가 감지되지 않으면 1초 간격으로 프레임 캡처
+            frame_interval = 0.5  # 객체가 감지되지 않으면 1초 간격으로 프레임 캡처
     else:
         frame_interval = 0.1  # 객체가 감지되면 0.1초 간격으로 프레임 캡처
 
     ret, frame = cap.read()
+    frame = cv2.resize(frame, (416,416))
     if not ret:
         break
 
@@ -100,12 +104,12 @@ while cap.isOpened():
         for class_name, count in current_count.items():
             if class_name == "layPeople":  # 클래스 이름이 "사람이 탄 킥보드"일 경우
                 kickboard_count += count
-                if kickboard_count >= 10: #현재 한번 객체가 감지될때 굉장히 많이 감지되므로 카운트 수를 늘렸음
+                if kickboard_count >= 20: #현재 한번 객체가 감지될때 굉장히 많이 감지되므로 카운트 수를 늘렸음
                     print("사람이 누웠어요!")
                     kickboard_count = 0  # 카운트 리셋
             elif class_name == "not_lay":  # 클래스 이름이 "누워있는 사람"일 경우
                 lying_person_count += count
-                if lying_person_count >= 10: #카운트 수 늘림.
+                if lying_person_count >= 20: #카운트 수 늘림.
                     print("일어났네요")
                     lying_person_count = 0  # 카운트 리셋
 
