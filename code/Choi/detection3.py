@@ -6,20 +6,20 @@ from pathlib import Path
 import argparse
 import sys
 import pathlib
+# 코랩에서 학습시킨 파일을 윈도우 환경에서 실행시키기 위해 필요
 pathlib.PosixPath = pathlib.WindowsPath
-# Yolov5 디렉토리를 시스템 경로에 추가
-yolov5_path = "G:\내 드라이브\yolo_merge_layPeople2\yolov5"
+# Yolov5 디렉토리를 시스템 경로에 추가 - yolov5의 함수를 이 파일에서 사용하기 위함임
+yolov5_path = "G:/내 드라이브/yolov5"
 sys.path.append(yolov5_path)
 from models.experimental import attempt_load
 from utils.torch_utils import select_device
 
-# 인자 파서 설정
+# YOLOv5의 detect.py와 유사한 인자 파서 설정
 parser = argparse.ArgumentParser()
-parser.add_argument('--source', type=str, default="D:/대외 활동 및 프로젝트/YOLOv5 정확도 향상 (졸업작품)/누운 사람/업로드4/KakaoTalk_20240601_093116388.mp4", help='file/dir/URL/glob, 0 for webcam')
-parser.add_argument('--weights', type=str, default='G:/내 드라이브/yolo_merge_layPeople2/yolov5/runs/train/yolo_merge_layPeople2/weights/best.pt', help='weights path')
+parser.add_argument('--source', type=str, default="C:/Users/Min/Downloads/B-Bad Chillin - Kickboard Wheelie_Manual & Sturz (1).mp4", help='file/dir/URL/glob, 0 for webcam')
+parser.add_argument('--weights', type=str, default='G:/내 드라이브/yolov5_1/runs/train/exp9/weights/best.pt', help='weights path')
 parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
 opt = parser.parse_args()
-
 
 # 디바이스 설정
 device = select_device(opt.device)

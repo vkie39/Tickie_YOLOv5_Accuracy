@@ -13,15 +13,15 @@ import pathlib
 pathlib.PosixPath = pathlib.WindowsPath
 
 # Yolov5 디렉토리를 시스템 경로에 추가
-yolov5_path = "G:/내 드라이브/yolov5"
+yolov5_path = "G:/내 드라이브/yolo_merge_layPeople2/yolov5"
 sys.path.append(yolov5_path)
 from models.experimental import attempt_load
 from utils.torch_utils import select_device
 
 # YOLOv5의 detect.py와 유사한 인자 파서 설정
 parser = argparse.ArgumentParser()
-parser.add_argument('--source', type=str, default="C:/Users/Min/Desktop/KakaoTalk_20240606_170455402.mp4", help='file/dir/URL/glob, 0 for webcam')
-parser.add_argument('--weights', type=str, default="C:/Users/Min/Desktop/best.pt", help='weights path')
+parser.add_argument('--source', type=str, default="G:/내 드라이브/example/laypeople.JPG", help='file/dir/URL/glob, 0 for webcam')
+parser.add_argument('--weights', type=str, default='G:/내 드라이브/yolo_merge_layPeople2/yolov5/runs/train/yolo_merge_layPeople2/weights/best.pt', help='weights path')
 parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
 opt = parser.parse_args()
 
