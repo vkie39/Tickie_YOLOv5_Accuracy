@@ -1,3 +1,5 @@
+#imshow 적용 안됨
+
 import cv2
 import torch
 import time
