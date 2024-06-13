@@ -2,7 +2,6 @@ import cv2
 import torch
 import time
 from collections import defaultdict
-from pathlib import Path
 import argparse
 import sys
 import pathlib
@@ -17,8 +16,8 @@ from utils.torch_utils import select_device
 
 # YOLOv5의 detect.py와 유사한 인자 파서 설정
 parser = argparse.ArgumentParser()
-parser.add_argument('--source', type=str, default="D:/대외 활동 및 프로젝트/YOLO를 활용한 자율주행/git_clone/Tickie_YOLOv5_Accuracy/sampleVideo/kickboard.mp4", help='file/dir/URL/glob, 0 for webcam')
-parser.add_argument('--weights', type=str, default="G:/내 드라이브/yolo_merge_kickboard/yolov5/runs/train/yolo_cutPaste_kickboard2/weights/best.pt", help='weights path')
+parser.add_argument('--source', type=str, default="D:/대외 활동 및 프로젝트/YOLO를 활용한 자율주행/git_clone/Tickie_YOLOv5_Accuracy/sampleVideo/kickboard.mp4", help='file/dir/URL/glob')
+parser.add_argument('--weights', type=str, default="D:/대외 활동 및 프로젝트/YOLO를 활용한 자율주행/git_clone/Tickie_YOLOv5_Accuracy/code/Choi/model/best.pt", help='weights path')
 parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
 opt = parser.parse_args()
 
@@ -38,8 +37,8 @@ cap = cv2.VideoCapture(opt.source)
 start_time = time.time()
 last_detection_time = time.time()
 
-# 초기 프레임 간격 설정 (초당 10프레임)
-frame_interval = 2  # 1초 간격
+# 초기 프레임 간격 설정 (초당 2프레임)
+frame_interval = 5 # 0.5초 간격
 
 while cap.isOpened():
     current_time = time.time()
@@ -75,9 +74,19 @@ while cap.isOpened():
                 int(xyxy[1] * h / img_size),
                 int(xyxy[2] * w / img_size),
                 int(xyxy[3] * h / img_size)]
+
+        # 바운딩 박스를 확장하기 위해 좌표 조정
+        bbox_extension = 10  # 확장할 크기 (픽셀 단위)
+        xyxy[0] = max(xyxy[0] - bbox_extension, 200)  # x_min
+        xyxy[1] = max(xyxy[1] - bbox_extension, 500)  # y_min
+        xyxy[2] = min(xyxy[2] + bbox_extension, w)  # x_max
+        xyxy[3] = min(xyxy[3] + bbox_extension, h)  # y_max
+
         label = f'{class_names[int(cls)]} {conf:.2f}'
-        cv2.rectangle(frame, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), (255, 0, 0), 2)
-        cv2.putText(frame, label, (xyxy[0], xyxy[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        cv2.rectangle(frame, (xyxy[0], xyxy[1] - 10), (xyxy[2], xyxy[3] + 20), (255, 0, 0), 2)
+        cv2.putText(frame, label, (xyxy[0], xyxy[1] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+
+        print(f"Class: {class_name}, Confidence: {conf:.2f}, BBox: {xyxy}")
 
     cv2.imshow('YOLOv5 Detection', frame)
     
