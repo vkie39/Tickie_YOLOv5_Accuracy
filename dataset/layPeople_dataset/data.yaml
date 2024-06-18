@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['layPeopleL']
+
+roboflow:
+  workspace: vkie39
+  project: cutpaste_lay
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/vkie39/cutpaste_lay/dataset/3
